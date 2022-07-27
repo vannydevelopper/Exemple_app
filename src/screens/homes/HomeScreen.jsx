@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ScrollView,StyleSheet,BackHandler,Animated, TouchableOpacity,TouchableWithoutFeedback, StatusBar, Text, View } from "react-native";
-import { Entypo, FontAwesome5, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { Entypo, FontAwesome5, AntDesign, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'; 
 import { Host, Portal } from 'react-native-portalize';
 import { Modalize } from 'react-native-modalize';
+import DateTimePicker from '@react-native-community/datetimepicker'
 
 const ExempleModal = ({onClose}) => {
        const [scale] = useState(new Animated.Value(1.1))
@@ -98,6 +99,24 @@ export default function HomeScreen(){
        const [showPartenaires, setshowPartenaires] = useState(false)
        const [showDeclarations, setshowDeclarations] = useState(false)
        // const declareRef = useRef(null)
+
+       //recuperation des dates
+       const [mydate, setDate] = useState(new Date());
+       const [displaymode, setMode] = useState('date');
+       const [isDisplayDate, setShow] = useState(false);
+       const changeSelectedDate = (event, selectedDate) => {
+              const currentDate = selectedDate || mydate;
+              setShow(Platform.OS === "ios");
+              setDate(currentDate);
+
+       };
+       const showMode = (currentMode) => {
+              setShow(true);
+              setMode(currentMode);
+       };
+       const displayDatepicker = () => {
+              showMode('date');
+       };
       
 
        return(
@@ -131,6 +150,26 @@ export default function HomeScreen(){
                                           <AntDesign name="caretdown" size={16} color="#777" />
                                    </TouchableOpacity>  
                             </View>
+                            <TouchableOpacity style={styles.datePickerButton} onPress={displayDatepicker}>
+                                   <View style={styles.iconDebutName}>
+                                          <MaterialIcons name="calendar-today" size={18} color="#777" style={styles.icon} />
+                                          <Text style={styles.debutName}>
+                                                 Date debut
+                                          </Text>
+                                   </View>
+                                   <View style={styles.rightDate}>
+                                          <Text style={styles.rightDateText}>{(mydate.getFullYear() + '-' + mydate.getMonth() + '-' + mydate.getDate())}</Text>
+                                   </View>
+                            </TouchableOpacity>
+
+                            { isDisplayDate && <DateTimePicker
+                                   testID="dateTimePicker"
+                                   value={mydate}
+                                   mode={displaymode}
+                                   is24Hour={true}
+                                   display="default"
+                                   onChange={changeSelectedDate}
+                            />}
                      </View>
                     {showPartenaires && <ExempleModal onClose={() => setshowPartenaires(false)}/>}
                     {/* <Portal>
@@ -233,4 +272,29 @@ const styles = StyleSheet.create({
               fontWeight: 'bold',
               marginLeft: 10
        },
+       iconDebutName: {
+              flexDirection: "row",
+              alignItems: 'center'
+       },
+       debutName: {
+              marginLeft: 10,
+              color: '#777'
+       },
+       datePickerButton: {
+              flexDirection: "row",
+              borderWidth: 1,
+              marginBottom: 8,
+              borderRadius: 10,
+              backgroundColor: "#fff",
+              borderColor: "#ddd",
+              padding: 9,
+              justifyContent: "space-between",
+              marginTop: 10,
+              marginHorizontal:10
+       },
+       rightDateText: {
+              fontWeight: 'bold',
+              padding: 2,
+              borderRadius: 5
+    },
 })

@@ -28,8 +28,8 @@ export default function AppContainer(){
        return(
              <NavigationContainer>
                     {user ? 
-              //       <Tabs/>
-                    <DrawerNavigator/>
+                    <Tabs/>
+              //       <DrawerNavigator/>
                     :
                      <Stack.Navigator>
                             <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}}/>

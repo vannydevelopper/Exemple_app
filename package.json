@@ -33,7 +33,8 @@
     "redux": "^4.2.0",
     "styled-components": "^5.3.5",
     "styled-system": "^5.1.5",
-    "react-native-gesture-handler": "~2.2.1"
+    "react-native-gesture-handler": "~2.2.1",
+    "@react-native-community/datetimepicker": "6.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
