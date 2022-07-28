@@ -56,11 +56,11 @@ export default function BotomTab({ state, descriptors, navigation }) {
                         // return <Animated.Text style={{fontSize: sizeAnim}}>here</Animated.Text>
                         const AnimatedIcon = Animated.createAnimatedComponent(AntDesign)
                         return <AnimatedIcon name="home" style={{ fontSize: sizeAnim }} color={isFocused ? primaryColor : '#777'} />
-                    } else if (route.name === 'Profil') {
+                    } else if (route.name === 'PvHistori') {
                         const AnimatedIcon = Animated.createAnimatedComponent(AntDesign)
                         return <AnimatedIcon name="appstore-o" style={{ fontSize: sizeAnim }} color={isFocused ? primaryColor : '#777'} />
-                    } else if (route.name === 'Notification') {
-
+                    } 
+                    else if (route.name === 'Profi') {
                         const AnimatedIcon = Animated.createAnimatedComponent(Ionicons)
                         return <AnimatedIcon name="md-person-outline" style={{ fontSize: sizeAnim }} color={isFocused ? primaryColor : '#777'} />
                     }

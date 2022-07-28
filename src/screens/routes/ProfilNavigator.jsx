@@ -4,7 +4,7 @@ import ProfilScreen from "../profil/ProfilScreen";
 
 const Stack = createNativeStackNavigator()
 
-export default function Profilnavigator(){
+export default function ProfilNavigator(){
        return(
               <Stack.Navigator>
                      <Stack.Screen name="Profil" component={ProfilScreen} options={{headerShown:false}}/>

@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import { Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import LoginScreen from "./screens/Auth/LoginScreen";
+import PvTabs from "./screens/pv/PvTabs";
 import DrawerNavigator from "./screens/routes/DrawerNavigator";
 import Tabs from "./screens/routes/Tabs";
 import { setUserAction } from "./store/actions/userActions";
@@ -30,6 +31,7 @@ export default function AppContainer(){
                     {user ? 
                     <Tabs/>
               //       <DrawerNavigator/>
+              // <PvTabs/>
                     :
                      <Stack.Navigator>
                             <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}}/>

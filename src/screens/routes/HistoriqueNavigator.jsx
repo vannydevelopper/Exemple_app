@@ -1,13 +1,13 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import NotificationScreen from "../notification/NotificationScreen";
+import PvTabs from "../pv/PvTabs";
 
 const Stack = createNativeStackNavigator()
 
-export default function NotificationNavigator(){
+export default function HistoriqueNavigator(){
        return(
               <Stack.Navigator>
-                     <Stack.Screen name="Notification" component={NotificationScreen} options={{headerShown:false}}/>
+                     <Stack.Screen name="Pv" component={PvTabs} options ={{ headerShown:false}}/>
               </Stack.Navigator>
        )
 }
