@@ -9,8 +9,8 @@ const TopBar = createMaterialTopTabNavigator()
 export default function PvTabs(){
        return(
               <TopBar.Navigator tabBar={props => <TopTabs {...props} />}>
-                     <TopBar.Screen name="Traite" component={PvTraite}/>
-                     <TopBar.Screen name="NonTraite" component={PvNonTraite}/>
+                     <TopBar.Screen name="Sqlite Json" component={PvTraite}/>
+                     <TopBar.Screen name="Sqlite form" component={PvNonTraite}/>
               </TopBar.Navigator>
        )
 }
