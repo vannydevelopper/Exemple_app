@@ -5,6 +5,7 @@ import BottomTab from "../../components/BottomTab";
 import HomeNavigator from "./HomeNavigator";
 import HistoriqueNavigator from "./HistoriqueNavigator";
 import ProfilNavigator from "./ProfilNavigator";
+import CrudNavigator from "./CrudNavigator";
 
 const Tab = createBottomTabNavigator()
 
@@ -14,6 +15,7 @@ export default function Tabs(){
                      <Tab.Navigator tabBar={props => <BottomTab {...props} />}>
                             <Tab.Screen name="HomePr" component={HomeNavigator} options={{headerShown:false}}/>
                             <Tab.Screen name="PvHistori" component={HistoriqueNavigator} options={{headerShown:false}}/>
+                            <Tab.Screen name="CrudTab" component={CrudNavigator} options={{headerShown:false}}/>
                             <Tab.Screen name="Profi" component={ProfilNavigator} options={{headerShown:false}}/>
                      </Tab.Navigator>
               </Host>

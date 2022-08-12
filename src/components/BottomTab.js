@@ -59,6 +59,9 @@ export default function BotomTab({ state, descriptors, navigation }) {
                     } else if (route.name === 'PvHistori') {
                         const AnimatedIcon = Animated.createAnimatedComponent(AntDesign)
                         return <AnimatedIcon name="appstore-o" style={{ fontSize: sizeAnim }} color={isFocused ? primaryColor : '#777'} />
+                    } else if (route.name === 'CrudTab') {
+                        const AnimatedIcon = Animated.createAnimatedComponent(AntDesign)
+                        return <AnimatedIcon name="appstore-o" style={{ fontSize: sizeAnim }} color={isFocused ? primaryColor : '#777'} />
                     } 
                     else if (route.name === 'Profi') {
                         const AnimatedIcon = Animated.createAnimatedComponent(Ionicons)
