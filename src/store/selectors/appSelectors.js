@@ -1,0 +1,1 @@
+export const routeSelector = ({app}) => app.route
