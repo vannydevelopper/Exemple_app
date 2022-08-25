@@ -121,70 +121,92 @@ export default function HomeScreen() {
 
        return (
               <>
-              <ScrollView>
-                     <View style={styles.container}>
-                            <StatusBar backgroundColor="#61dafb" />
-                            <View style={styles.header}>
-                                   <View style={styles.icone}>
-                                          <FontAwesome5 name="user" size={30} color="black" />
-                                   </View>
-                                   <View style={styles.cardTitle}>
-                                          <Text style={styles.title}>Accuiel</Text>
+                     <ScrollView>
+                            <View style={styles.container}>
+                                   <StatusBar backgroundColor="#61dafb" />
+                                   <View style={styles.header}>
+                                          <View style={styles.icone}>
+                                                 <FontAwesome5 name="user" size={30} color="black" />
+                                          </View>
+                                          <View style={styles.cardTitle}>
+                                                 <Text style={styles.title}>Accuiel</Text>
+                                          </View>
+                                          <View>
+                                                 <Entypo name="menu" size={24} color="black" />
+                                          </View>
                                    </View>
                                    <View>
-                                          <Entypo name="menu" size={24} color="black" />
+                                          <TouchableOpacity style={styles.modelCard} onPress={() => setshowPartenaires(true)}>
+                                                 <Text style={styles.inputText}>
+                                                        Selectionner
+                                                 </Text>
+                                                 <AntDesign name="caretdown" size={16} color="#777" />
+                                          </TouchableOpacity>
                                    </View>
-                            </View>
-                            <View>
-                                   <TouchableOpacity style={styles.modelCard} onPress={() => setshowPartenaires(true)}>
-                                          <Text style={styles.inputText}>
-                                                 Selectionner
-                                          </Text>
-                                          <AntDesign name="caretdown" size={16} color="#777" />
+                                   <View>
+                                          <TouchableOpacity style={styles.modelCard} onPress={() => setshowDeclarations(true)}>
+                                                 <Text style={styles.inputText}>
+                                                        Selectionner
+                                                 </Text>
+                                                 <AntDesign name="caretdown" size={16} color="#777" />
+                                          </TouchableOpacity>
+                                   </View>
+                                   <TouchableOpacity style={styles.datePickerButton} onPress={displayDatepicker}>
+                                          <View style={styles.iconDebutName}>
+                                                 <MaterialIcons name="calendar-today" size={18} color="#777" style={styles.icon} />
+                                                 <Text style={styles.debutName}>
+                                                        Date debut
+                                                 </Text>
+                                          </View>
+                                          <View style={styles.rightDate}>
+                                                 <Text style={styles.rightDateText}>{(mydate.getFullYear() + '-' + mydate.getMonth() + '-' + mydate.getDate())}</Text>
+                                          </View>
                                    </TouchableOpacity>
-                            </View>
-                            <View>
-                                   <TouchableOpacity style={styles.modelCard} onPress={() => setshowDeclarations(true)}>
-                                          <Text style={styles.inputText}>
-                                                 Selectionner
-                                          </Text>
-                                          <AntDesign name="caretdown" size={16} color="#777" />
-                                   </TouchableOpacity>
-                            </View>
-                            <TouchableOpacity style={styles.datePickerButton} onPress={displayDatepicker}>
-                                   <View style={styles.iconDebutName}>
-                                          <MaterialIcons name="calendar-today" size={18} color="#777" style={styles.icon} />
-                                          <Text style={styles.debutName}>
-                                                 Date debut
-                                          </Text>
-                                   </View>
-                                   <View style={styles.rightDate}>
-                                          <Text style={styles.rightDateText}>{(mydate.getFullYear() + '-' + mydate.getMonth() + '-' + mydate.getDate())}</Text>
-                                   </View>
-                            </TouchableOpacity>
 
-                            {isDisplayDate && <DateTimePicker
-                                   testID="dateTimePicker"
-                                   value={mydate}
-                                   mode={displaymode}
-                                   is24Hour={true}
-                                   display="default"
-                                   onChange={changeSelectedDate}
-                            />}
+                                   {isDisplayDate && <DateTimePicker
+                                          testID="dateTimePicker"
+                                          value={mydate}
+                                          mode={displaymode}
+                                          is24Hour={true}
+                                          display="default"
+                                          onChange={changeSelectedDate}
+                                   />}
+
+
+                            </View>
                             <View style={styles.card}>
                                    <View style={styles.cardPrincipale}>
-                                                 <Text>Candidat a la vaccination</Text>
+                                          <Text>Candidat a la vaccination</Text>
                                    </View>
                                    <View style={styles.cardPrincipale2}>
                                           <View style={styles.cardReponse}>
                                                  <Text style={styles.labelName}>Nom</Text>
                                                  <Text style={styles.labelValue}>AZESENGA </Text>
                                           </View>
+
+                                   </View>
+                            </View>
+                            <View style={{borderWidth:1, borderColor:"#777", marginTop:10, marginHorizontal:10}}>
+                                   <View style={{backgroundColor:"#ddd"}}>
+                                          <View style={{marginHorizontal:20}}>
+                                                 <Text style={{fontSize: 15, fontWeight:"bold"}}>Dose</Text>
+                                                 <View style={{flexDirection:"row"}}>
+                                                        <Text>Date de vaccination</Text>
+                                                        <Text style={{color:"red"}}>*</Text>
+                                                 </View>
+                                                 <View>
+                                          <TouchableOpacity style={styles.modelCard1} >
+                                                 <Text style={styles.inputText}>
+                                                        Selectionner
+                                                 </Text>
+                                                 <AntDesign name="caretdown" size={16} color="#777" />
+                                          </TouchableOpacity>
+                                   </View>
+                                          </View>
                                           
                                    </View>
                             </View>
 
-                     </View>
                      </ScrollView>
                      {showPartenaires && <ExempleModal onClose={() => setshowPartenaires(false)} />}
                      {/* <Portal>
@@ -243,6 +265,16 @@ const styles = StyleSheet.create({
               backgroundColor: "#fff",
               padding: 9,
               borderRadius: 10,
+              borderWidth: 1,
+              borderColor: "#ddd"
+       },
+       modelCard1: {
+              justifyContent: "space-between",
+              flexDirection: "row",
+              marginTop: 10,
+              backgroundColor: "#fff",
+              padding: 9,
+              borderRadius: 5,
               borderWidth: 1,
               borderColor: "#ddd"
        },
@@ -328,23 +360,23 @@ const styles = StyleSheet.create({
               backgroundColor: "#fff",
               elevation: 8,
        },
-       card:{
-              borderWidth:1,
+       card: {
+              borderWidth: 1,
               marginHorizontal: 10,
               borderTopLeftRadius: 10,
               borderTopRightRadius: 10,
        },
-       labelName:{
-              fontSize:15,
+       labelName: {
+              fontSize: 15,
               marginLeft: 5
        },
-       cardReponse:{
-              flexDirection:"row"
+       cardReponse: {
+              flexDirection: "row"
        },
-       labelValue:{
-              fonntSize:17,
-              color:"blue",
-              fontWeight:"bold",
+       labelValue: {
+              fonntSize: 17,
+              color: "blue",
+              fontWeight: "bold",
               marginLeft: 10
        }
        // ligneSeparator:{
