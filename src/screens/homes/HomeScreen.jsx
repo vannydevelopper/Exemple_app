@@ -4,6 +4,7 @@ import { Entypo, FontAwesome5, AntDesign, MaterialCommunityIcons, MaterialIcons 
 import { Host, Portal } from 'react-native-portalize';
 import { Modalize } from 'react-native-modalize';
 import DateTimePicker from '@react-native-community/datetimepicker'
+import moment from 'moment'
 
 const ExempleModal = ({ onClose }) => {
        const [scale] = useState(new Animated.Value(1.1))
@@ -98,11 +99,12 @@ const DeclareModal = ({ onClose }) => {
 export default function HomeScreen() {
        const [showPartenaires, setshowPartenaires] = useState(false)
        const [showDeclarations, setshowDeclarations] = useState(false)
+       const [showTime, setShowTime] = useState(false)
        // const declareRef = useRef(null)
 
        //recuperation des dates
        const [mydate, setDate] = useState(new Date());
-       const [displaymode, setMode] = useState('date');
+       //const [displaymode, setMode] = useState('date');
        const [isDisplayDate, setShow] = useState(false);
        const changeSelectedDate = (event, selectedDate) => {
               const currentDate = selectedDate || mydate;
@@ -112,11 +114,20 @@ export default function HomeScreen() {
        };
        const showMode = (currentMode) => {
               setShow(true);
-              setMode(currentMode);
+              //setMode(currentMode);
        };
        const displayDatepicker = () => {
               showMode('date');
        };
+
+       //recuperation des heures
+       const onChangeTime = (event, time) => {
+              setShowTime(Platform.OS === "ios");
+              // dispatch(setDemandeTime(time));
+       };
+
+       var today = new Date();
+       console.log(today)
 
 
        return (
@@ -159,14 +170,18 @@ export default function HomeScreen() {
                                                  </Text>
                                           </View>
                                           <View style={styles.rightDate}>
-                                                 <Text style={styles.rightDateText}>{(mydate.getFullYear() + '-' + mydate.getMonth() + '-' + mydate.getDate())}</Text>
+                                                 <Text style={styles.rightDateText}>
+                                                        {/* {(mydate.getFullYear() + '-' + mydate.getMonth() + '-' + mydate.getDate())} */}
+                                                        {(mydate ? moment(mydate).format('H:mm') : "Sélectionner l'heure")}
+                                                 </Text>
                                           </View>
                                    </TouchableOpacity>
 
                                    {isDisplayDate && <DateTimePicker
                                           testID="dateTimePicker"
                                           value={mydate}
-                                          mode={displaymode}
+                                          // mode={displaymode}
+                                          mode={"time"}
                                           is24Hour={true}
                                           display="default"
                                           onChange={changeSelectedDate}
@@ -186,25 +201,60 @@ export default function HomeScreen() {
 
                                    </View>
                             </View>
-                            <View style={{borderWidth:1, borderColor:"#777", marginTop:10, marginHorizontal:10}}>
-                                   <View style={{backgroundColor:"#ddd"}}>
-                                          <View style={{marginHorizontal:20}}>
-                                                 <Text style={{fontSize: 15, fontWeight:"bold"}}>Dose</Text>
-                                                 <View style={{flexDirection:"row"}}>
+                            <View style={{ borderWidth: 1, borderColor: "#777", marginTop: 10, marginHorizontal: 10 }}>
+                                   <View style={{ backgroundColor: "#ddd" }}>
+                                          <View style={{ marginHorizontal: 20 }}>
+                                                 <Text style={{ fontSize: 15, fontWeight: "bold" }}>Dose</Text>
+                                                 <View style={{ flexDirection: "row" }}>
                                                         <Text>Date de vaccination</Text>
-                                                        <Text style={{color:"red"}}>*</Text>
+                                                        <Text style={{ color: "red" }}>*</Text>
                                                  </View>
                                                  <View>
-                                          <TouchableOpacity style={styles.modelCard1} >
-                                                 <Text style={styles.inputText}>
-                                                        Selectionner
-                                                 </Text>
-                                                 <AntDesign name="caretdown" size={16} color="#777" />
-                                          </TouchableOpacity>
-                                   </View>
+                                                        <TouchableOpacity style={styles.modelCard1} >
+                                                               <Text style={styles.inputText}>
+                                                                      Selectionner
+                                                               </Text>
+                                                               <AntDesign name="caretdown" size={16} color="#777" />
+                                                        </TouchableOpacity>
+                                                 </View>
+                                                 <View style={{ flexDirection: "row" }}>
+                                                        <Text>Date de vaccination</Text>
+                                                        <Text style={{ color: "red" }}>*</Text>
+                                                 </View>
+                                                 <View>
+                                                        <TouchableOpacity style={styles.modelCard1} >
+                                                               <Text style={styles.inputText}>
+                                                                      Selectionner
+                                                               </Text>
+                                                               <AntDesign name="caretdown" size={16} color="#777" />
+                                                        </TouchableOpacity>
+                                                 </View>
                                           </View>
-                                          
+
                                    </View>
+                            </View>
+                            <View style={{ ...styles.formGroup, paddingHorizontal: 10 }}>
+                                   <Text >
+                                          Date de demande de la course
+                                   </Text>
+                                   <TouchableOpacity style={styles.openModalize} onPress={() => setShowTime(true)}>
+                                          <Text style={styles.openModalizeLabel} numberOfLines={1}>
+                                                 Sélectionner l'heure
+                                          </Text>
+                                          <AntDesign name="clockcircleo" size={20} color="#777" />
+                                   </TouchableOpacity>
+
+                                   {showTime && (
+                                          <DateTimePicker
+                                                 testID="dateTimePicker"
+                                                 value={time || new Date()}
+                                                 mode='time'
+                                                 is24Hour={true}
+                                                 display="default"
+                                                 onChange={onChangeTime}
+                                                 maximumDate={new Date()}
+                                          />
+                                   )}
                             </View>
 
                      </ScrollView>
@@ -378,7 +428,21 @@ const styles = StyleSheet.create({
               color: "blue",
               fontWeight: "bold",
               marginLeft: 10
-       }
+       },
+       openModalize: {
+              backgroundColor: '#dde1ed',
+              padding: 10,
+              borderRadius: 5,
+              marginTop: 5,
+              flexDirection: 'row',
+              alignContent: 'center',
+              alignItems: 'center',
+              justifyContent: 'space-between'
+       },
+       openModalizeLabel: {
+              color: '#555',
+              fontSize: 14,
+       },
        // ligneSeparator:{
        //        borderTopWidth: 1,
        //        marginTop: 10,
