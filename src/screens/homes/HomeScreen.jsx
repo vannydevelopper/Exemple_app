@@ -100,6 +100,7 @@ export default function HomeScreen() {
        const [showPartenaires, setshowPartenaires] = useState(false)
        const [showDeclarations, setshowDeclarations] = useState(false)
        const [showTime, setShowTime] = useState(false)
+       const [showTime2, setShowTime2] = useState(false)
        // const declareRef = useRef(null)
 
        //recuperation des dates
@@ -123,6 +124,30 @@ export default function HomeScreen() {
        //recuperation des heures
        const onChangeTime = (event, time) => {
               setShowTime(Platform.OS === "ios");
+              // dispatch(setDemandeTime(time));
+       };
+
+       //recuperation Heure
+       const [mydate2, setDate2] = useState(new Date());
+       //const [displaymode, setMode] = useState('date');
+       const [isDisplayDate2, setShow2] = useState(false);
+       const changeSelectedDate2 = (event, selectedDate) => {
+              const currentDate = selectedDate || mydate;
+              setShow2(Platform.OS === "ios");
+              setDate2(currentDate);
+
+       };
+       const showMode2 = (currentMode) => {
+              setShow2(true);
+              //setMode(currentMode);
+       };
+       const displayDatepicker2 = () => {
+              showMode2('date');
+       };
+
+       //recuperation des heures
+       const onChangeTime2 = (event, time) => {
+              setShowTime2(Platform.OS === "ios");
               // dispatch(setDemandeTime(time));
        };
 
@@ -185,6 +210,31 @@ export default function HomeScreen() {
                                           is24Hour={true}
                                           display="default"
                                           onChange={changeSelectedDate}
+                                   />}
+
+                                   <TouchableOpacity style={styles.datePickerButton} onPress={displayDatepicker2}>
+                                          <View style={styles.iconDebutName}>
+                                                 <MaterialIcons name="calendar-today" size={18} color="#777" style={styles.icon} />
+                                                 <Text style={styles.debutName}>
+                                                        Heure 
+                                                 </Text>
+                                          </View>
+                                          <View style={styles.rightDate}>
+                                                 <Text style={styles.rightDateText}>
+                                                        {/* {(mydate.getFullYear() + '-' + mydate.getMonth() + '-' + mydate.getDate())} */}
+                                                        {(mydate2 ? moment(mydate2).format('H:mm') : "Sélectionner l'heure")}
+                                                 </Text>
+                                          </View>
+                                   </TouchableOpacity>
+
+                                   {isDisplayDate2 && <DateTimePicker
+                                          testID="dateTimePicker"
+                                          value={mydate2}
+                                          // mode={displaymode}
+                                          mode={"time"}
+                                          is24Hour={true}
+                                          display="default"
+                                          onChange={changeSelectedDate2}
                                    />}
 
 
@@ -256,6 +306,8 @@ export default function HomeScreen() {
                                           />
                                    )}
                             </View>
+
+
 
                      </ScrollView>
                      {showPartenaires && <ExempleModal onClose={() => setshowPartenaires(false)} />}
