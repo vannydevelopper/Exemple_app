@@ -2,9 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, StyleSheet, BackHandler, Animated, TouchableOpacity, TouchableWithoutFeedback, StatusBar, Text, View } from "react-native";
 import { Entypo, FontAwesome5, AntDesign, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { Host, Portal } from 'react-native-portalize';
+import { Button, Icon, Input, FormControl, WarningOutlineIcon, extendTheme } from 'native-base'
 import { Modalize } from 'react-native-modalize';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import moment from 'moment'
+import { useNavigation } from "@react-navigation/native";
 
 const ExempleModal = ({ onClose }) => {
        const [scale] = useState(new Animated.Value(1.1))
@@ -101,6 +103,8 @@ export default function HomeScreen() {
        const [showDeclarations, setshowDeclarations] = useState(false)
        const [showTime, setShowTime] = useState(false)
        const [showTime2, setShowTime2] = useState(false)
+
+       const navigation = useNavigation()
        // const declareRef = useRef(null)
 
        //recuperation des dates
@@ -150,6 +154,10 @@ export default function HomeScreen() {
               setShowTime2(Platform.OS === "ios");
               // dispatch(setDemandeTime(time));
        };
+
+       const connexion = () =>{
+              navigation.navigate("Test")
+       }
 
        var today = new Date();
        console.log(today)
@@ -216,7 +224,7 @@ export default function HomeScreen() {
                                           <View style={styles.iconDebutName}>
                                                  <MaterialIcons name="calendar-today" size={18} color="#777" style={styles.icon} />
                                                  <Text style={styles.debutName}>
-                                                        Heure 
+                                                        Heure
                                                  </Text>
                                           </View>
                                           <View style={styles.rightDate}>
@@ -306,6 +314,20 @@ export default function HomeScreen() {
                                           />
                                    )}
                             </View>
+
+                            <Button
+                                   borderRadius={15}
+                                   // isDisabled={email == "" || password == ""}
+                                   onPress={connexion}
+                                   marginBottom={5}
+                                   marginHorizontal={20}
+                                   mt={5}
+                                   backgroundColor={"#F58424"}
+                                   py={3.5}
+                                   _text={{ color: '#fff', fontWeight: 'bold' }}
+                            >
+                                   Connecter
+                            </Button>
 
 
 
