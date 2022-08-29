@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, Animated, BackHandler, TouchableWithoutFeedback, View } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { Host, Portal } from 'react-native-portalize';
+import { Button, Icon, Input, FormControl, WarningOutlineIcon, extendTheme } from 'native-base'
 import { Entypo, FontAwesome5, AntDesign, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from "@react-navigation/native";
 
 
 const Modal = ( { onClose, selectedPartenaire, onPartenaireSelect }) => {
@@ -89,6 +91,11 @@ export default function TestScreen() {
         const displayDatepicker2 = () => {
                 showModeDate('date');
         };
+
+        const navigation = useNavigation()
+        const connexion = () => {
+                navigation.navigate("Disign")
+        }
         return (
                 <>
                 <ScrollView>
@@ -151,6 +158,21 @@ export default function TestScreen() {
                                                 <AntDesign name="caretdown" size={16} color="#777" />
                                         </TouchableOpacity>
                                 </View>
+                                <Button
+                                
+                                   borderRadius={15}
+                                   // isDisabled={email == "" || password == ""}
+                                   onPress={connexion}
+                                   marginBottom={5}
+                                   marginHorizontal={20}
+                                   mt={5}
+                                   backgroundColor={"#F58424"}
+                                   py={3.5}
+                                   _text={{ color: '#fff', fontWeight: 'bold' }}
+                            >
+                                   Continuer sur historique
+                            </Button>
+
                         </View>
                 </ScrollView>
                 {showPartenaires && <Modal selectedPartenaire={selectedPartenaire} onPartenaireSelect={onPartenaireSelect} onClose={() => setshowPartenaires(false)}/>}
