@@ -94,7 +94,7 @@ export default function TestScreen() {
 
         const navigation = useNavigation()
         const connexion = () => {
-                navigation.navigate("Disign")
+                navigation.navigate("Slider")
         }
         return (
                 <>
