@@ -155,8 +155,12 @@ export default function HomeScreen() {
               // dispatch(setDemandeTime(time));
        };
 
-       const connexion = () =>{
+       const connexion = () => {
               navigation.navigate("Test")
+       }
+
+       const MenuTest = () => {
+              navigation.navigate("Menu")
        }
 
        var today = new Date();
@@ -314,6 +318,14 @@ export default function HomeScreen() {
                                           />
                                    )}
                             </View>
+
+                            <Button
+                                   onPress={MenuTest}
+                                   marginBottom={5}
+                                   marginHorizontal={20}
+                                   mt={5}>
+                                   Menu Restaurant
+                            </Button>
 
                             <Button
                                    borderRadius={15}
