@@ -2,11 +2,14 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, TouchableNativeFeedback, AppState } from "react-native";
 import { COLORS } from "../../styles/COLORS"
 import { Entypo, MaterialCommunityIcons, Foundation, FontAwesome5 } from '@expo/vector-icons';
-import fetchApi from "../../helpers/fetchApi";
+import fetchApi, { API_URL } from "../../helpers/fetchApi";
 import { useNavigation } from "@react-navigation/native";
 import { ID_STATUS_DRIVER_COURSE } from "../../constants/ID_STATUS_DRIVER_COURSE";
 import useFetch from "../../hooks/useFetch";
 import moment from 'moment'
+import io from 'socket.io-client'
+import { useSelector } from "react-redux";
+import { userSelector } from "../../store/selectors/userSelector";
 
 export const MINUTES_TO_ACCEPT = 2
 
@@ -19,20 +22,34 @@ export const MINUTES_TO_ACCEPT = 2
  */
 
 export default function CourseConfirmation() {
+        const socket = useRef(io(API_URL)).current
+        const user = useSelector(userSelector)
         const [courses, setCourses] = useState(null)
         const [loadingAnnilation, setLoadingAnnilation] = useState(false)
         const [loadingConfirme, setLoadingConfirme] = useState(false)
         const [loadingNewStatus, setLoadingNewStatus] = useState(false)
         const [annulationCourse, setAnnulationCourse] = useState(true)
         const [leftUnix, setLeftUnix] = useState(new Date().getTime())
-        const [loadingStatus, status] = useFetch('/services/driver_livreurs/status')
         const navigation = useNavigation()
+        let isSocketConnected = false;
+        let missedEvents = []
+
+        /**
+         * fonction pour recuperer les status et le changement et fqire le changement
+         */
+
+        const [loadingStatus, status] = useFetch('/services/driver_livreurs/status')
+ 
 
         const getNextStatus = currentStatusId => {
                 const currentStatus = status.result.findIndex(value => value.ID_STATUS_COURSE == currentStatusId)
                 const nextStatus = status.result[currentStatus + 1]
                 return nextStatus
         }
+
+        /**
+         * fonction pour annuler la course qu'on t'a propose
+         */
 
         const checkAnnulation = async () => {
                 try {
@@ -54,6 +71,10 @@ export default function CourseConfirmation() {
                 }
         }
 
+         /**
+         * fonction pour confirmer la course qu'on t'a propose et faire changer le status
+         */
+
         const checkConfirmation = async () => {
                 try {
                         setLoadingConfirme(true)
@@ -72,6 +93,8 @@ export default function CourseConfirmation() {
                         setLoadingConfirme(false)
                 }
         }
+
+
 
         const onStatusChange = async (newStatusId) => {
                 try {
@@ -102,7 +125,7 @@ export default function CourseConfirmation() {
         }
 
         /**
-         * Fonction pour lancer le conteur des menutes en attendant la confirmation du livreurs
+         * Fonction pour lancer le compteur des menutes en attendant la confirmation du livreurs
          * @param {*} newState 
          */
 
@@ -111,8 +134,19 @@ export default function CourseConfirmation() {
                         if (courses && courses.ID_STATUS_COURSE == ID_STATUS_DRIVER_COURSE.ETTENTE) {
                                 setLeftUnix(moment((moment(courses.DATE_DEMANDE).add(MINUTES_TO_ACCEPT, 'minutes')) - moment()).unix())
                         }
+                        checkMissedEvents()
                 }
         };
+
+        const checkMissedEvents = () => {
+                if (isSocketConnected && missedEvents.length > 0) {
+                        // process missed events if there are any
+                        missedEvents.forEach((task) => {
+                                task()
+                        });
+                        missedEvents = [];
+                }
+        }
 
         useEffect(() => {
                 if (courses && courses.ID_STATUS_COURSE == ID_STATUS_DRIVER_COURSE.ETTENTE) {
@@ -138,22 +172,48 @@ export default function CourseConfirmation() {
         }, [leftUnix])
 
         useEffect(() => {
-                AppState.addEventListener('change', handleAppStateChange);
+                const subscription = AppState.addEventListener('change', handleAppStateChange);
                 return () => {
-                        AppState.removeEventListener('change', handleAppStateChange);
+                        subscription.remove();
                 };
         }, []);
 
+        const getCourseEttente = async () => {
+                try {
+                        const response = await fetchApi("/services/driver_livreurs")
+                        setCourses(response.result)
+                }
+                catch (error) {
+                        console.log(error)
+                }
+        }
+
         useEffect(() => {
-                (async () => {
-                        try {
-                                const response = await fetchApi("/services/driver_livreurs")
-                                setCourses(response.result)
+                getCourseEttente()
+        }, [])
+
+        /**
+         * fonction pour ecouter la commande emise cote application des clients
+         */
+        useEffect(() => {
+                socket.on('connect', () => {
+                        console.log('connected')
+                        socket.emit('join', { userId: user.ID_USER });
+                })
+                socket.on('COURSE_EN_ETTENTE', message => {
+                        console.log(message)
+                        getCourseEttente()
+                        if (AppState.currentState === 'active') {
+                                // execute task immediately if app is in foreground
+                                getCourseEttente()
+                        } else {
+                                // add task to missed events if app is in background
+                                missedEvents.push(getCourseEttente);
                         }
-                        catch (error) {
-                                console.log(error)
-                        }
-                })()
+                })
+                return () => {
+                        socket.disconnect()
+                }
         }, [])
 
         if (!courses) {
