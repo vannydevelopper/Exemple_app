@@ -100,7 +100,7 @@ export default function ChatMessageScreen() {
                 const newOffet = offset + LIMIT
                 setOffset(newOffet)
                 const ms = await getMessages(newOffet)
-                setMessages(ms)
+                setMessages(om => [...om, ...ms])
                 setIsLoadingMore(false)
         }
 
